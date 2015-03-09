@@ -6,8 +6,9 @@
 #Include FindClick.ahk
 coordmode,mouse,screen
 OutputFile = %A_WorkingDir%/Collection.csv
-Gui,show,w200 h340,Please Select your Game Language
-gui, Add, Text,, Please select your Language.
+
+Gui,show,w200 h340,Language Select
+gui, Add, Text,, Please select your Game Language.
 Gui, Add, Radio,w200 vLanguageselect, English (GB)
 Gui, Add, Radio,w200 , English (US)
 Gui, Add, Radio,w200 , German
@@ -22,7 +23,8 @@ Gui, Add, Radio,w200 , Portuguese
 Gui, Add, Radio,w200 , portuguese (Brazil)
 Gui, Add, Radio,w200 , Chinese
 Gui, Add, Radio,w200 , Chinese (Tailand)
-Gui, Add, Button,gStartExport, Start
+Gui, Add, Button,gStartsettings, Start
+gui,add,button,gCloseApp y291 x50,Cancel
 return
 
 UserConfig_a = o100,TransBlack
@@ -37,7 +39,7 @@ return
 pausedbot = 0
 return
 
-StartExport:
+Startsettings:
 filedelete,%OutputFile%
 TitleText := "Mana Cost,Card Name,Type,Class,Set,Rarity,Normal,Golden`n"
 fileappend,%TitleText%,%OutputFile%
@@ -53,7 +55,31 @@ winrestore,ahk_pid %GamePID%
 winmove,ahk_pid %GamePID%,,100,100,1024,768,
 ;searchx := %Lx%+485
 ;searchy := %Ly%+697
-MainFunc()
+GUI,2:show,W200 h190,Sets List
+gui,2:add,text, x10 y10 w180,Please select the sets of cards you wish to scan.
+gui,2:add,Checkbox,vBasicset w180,Basic
+gui,2:add,Checkbox,vClassicset w180,Classic (Expert)
+gui,2:add,Checkbox,vNaxxset w180,Naxxramas
+gui,2:add,Checkbox,vGoblinsset w180,GVG
+gui,2:add,Checkbox,vRewardset w180,Reward
+gui,2:add,Checkbox,vPromoset w180,Promotion
+gui,2:add,button,gStartExport x8 y157,Start
+gui,2:add,button,gCloseApp y157 x50,Cancel
+return
+
+CloseApp:
+exitapp
+return
+
+GuiClose:
+ExitApp
+
+2GuiClose:
+ExitApp
+
+StartExport:
+gui,2:submit
+mainFunc()
 return
 
 MainFunc()
@@ -62,132 +88,153 @@ MainFunc()
 	Languagefile()
 	cardinfo := parseJson(CardListMain)
 	for key, val in cardinfo[languageselect2]
-	{
-		for key2, val2 in val
-		{	
-			if val2.collectible = -1
-			{
-				if (val2.type = "Minion" or val2.type = "Weapon" or val2.type = "Spell")
+	{	
+		msgbox % key
+		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promotionset = 1 and key = "Promotion"))
+		{
+			for key2, val2 in val
+			{	
+				if val2.collectible = -1
 				{
-					CardName := val2.name
-					searchtext = hello
-					searchtextpre := val2.name . " " . val2.text . " " . val2.artist
-					StringReplace,searchtextintermed,searchtextpre,<b>,%A_SPACE%,1
-					StringReplace,searchtextter,searchtextintermed,</b>,%A_SPACE%,1
-					StringReplace,searchtextfor,searchtextter,E.M,%A_SPACE%,1
-					StringReplace,searchtextfive,searchtextfor,$,%A_SPACE%,1	
-					StringReplace,searchtextsix,searchtextfive,+,%A_SPACE%,1
-					StringReplace,searchtextseven,searchtextsix,:,%A_SPACE%,1
-					StringReplace,searchtext8,searchtextseven,<i>,%A_SPACE%,1
-					StringReplace,searchtext9,searchtext8,</i>,%A_SPACE%,1
-					StringReplace,searchtext10,searchtext9,/,%A_SPACE%,1
-					StringReplace,searchtext11,searchtext10,(,%A_SPACE%,1
-					StringReplace,searchtext12,searchtext11,),%A_SPACE%,1
-					StringReplace,searchtext,searchtext12,.,%A_SPACE%,1
-					Cardtype := "images/cardnotgolden" . val2.type . ".png"
-					if val2.rarity = "Legendary"
+					if (val2.type = "Minion" or val2.type = "Weapon" or val2.type = "Spell")
 					{
-						Cardtype := "images/cardnotgolden" . val2.type . val2.rarity . ".png"
-					}
-					cardoneabsent = 0
-					cardonefoundtwo = 0
-					cardtwoabsent = 0
-					cardtwofoundtwo = 0
-					classcardfound = 0
-					winactivate,ahk_pid %GamePID%
-					mouseClick,left,585,797
-					send,{delete}
-					sleep 200
-					SetKeyDelay, 1, 0
-					;control,editpaste,%searchtext%,,Hearthstone,
-					clipboard = %searchtext%
-					sleep 100
-					send ^v
-					;controlsend,ahk_parent,{enter},Hearthstone,
-					mouseclick,left,585,757
-					sleep 100
-					card2twoimage := "images/card2found2" . val2.type
-					card1twoimage := "images/card1found2" . val2.type
-					FindClick(Cardtype,"rHearthstone funcclasscardfound !a")
-					if val2.type = "Minion"
-					{
+						CardName := val2.name
+						searchtext = hello
+						searchtextpre := val2.name . " " . val2.text . " " . val2.artist
+						StringReplace,searchtextintermed,searchtextpre,<b>,%A_SPACE%,1
+						StringReplace,searchtextter,searchtextintermed,</b>,%A_SPACE%,1
+						StringReplace,searchtextfor,searchtextter,E.M,%A_SPACE%,1
+						StringReplace,searchtextfive,searchtextfor,$,%A_SPACE%,1	
+						StringReplace,searchtextsix,searchtextfive,+,%A_SPACE%,1
+						StringReplace,searchtextseven,searchtextsix,:,%A_SPACE%,1
+						StringReplace,searchtext8,searchtextseven,<i>,%A_SPACE%,1
+						StringReplace,searchtext9,searchtext8,</i>,%A_SPACE%,1
+						StringReplace,searchtext10,searchtext9,/,%A_SPACE%,1
+						StringReplace,searchtext11,searchtext10,(,%A_SPACE%,1
+						StringReplace,searchtext12,searchtext11,),%A_SPACE%,1
+						StringReplace,searchtext,searchtext12,.,%A_SPACE%,1
+						Cardtype := "images/cardnotgolden" . val2.type . ".png"
+						if val2.rarity = "Legendary"
+						{
+							Cardtype := "images/cardnotgolden" . val2.type . val2.rarity . ".png"
+						}
+						cardoneabsent = 0
+						cardonefoundtwo = 0
+						cardtwoabsent = 0
+						cardtwofoundtwo = 0
+						classcardfound = 0
+						winactivate,ahk_pid %GamePID%
+						mouseClick,left,585,797
+						send,{delete}
+						sleep 200
+						SetKeyDelay, 1, 0
+						;control,editpaste,%searchtext%,,Hearthstone,
+						clipboard = %searchtext%
+						sleep 100
+						send ^v
+						;controlsend,ahk_parent,{enter},Hearthstone,
+						mouseclick,left,585,757
+						sleep 100
+						card2twoimage := "images/card2found2" . val2.type
+						card1twoimage := "images/card1found2" . val2.type
 						FindClick(Cardtype,"rHearthstone funcclasscardfound !a")
-					}
-					if val2.type = "Spell"
-					{
-						FindClick(Cardtype,"rHearthstone funcclasscardfound !a")
-					}
-					if val2.type = "Weapon"
-					{
-						pixelsearch,pixelfound,,136,250,137,251,0x4F483F,40,RGB
-						if pixelfound = 136
+						if val2.type = "Minion"
 						{
-							classcardfound = 1
+							FindClick(Cardtype,"rHearthstone funcclasscardfound !a")
 						}
-					}
-					FindClick("/Images/card1notfound.png","funccard1notfound rHearthstone !a")
-					FindClick(card1twoimage,"funccard1found2 rHearthstone !a")
-					FindClick("/Images/card2notfound.png","funccard2notfound rHearthstone !a")
-					FindClick(card2twoimage,"funccard2found2 rHearthstone !a")
-					If cardoneabsent = 0
-					{
-						If classcardfound = 1
+						if val2.type = "Spell"
 						{
-							If cardonefoundtwo = 1
+							FindClick(Cardtype,"rHearthstone funcclasscardfound !a")
+						}
+						if val2.type = "Weapon"
+						{
+							pixelsearch,pixelfound,,136,250,137,251,0x4F483F,40,RGB
+							if pixelfound = 136
 							{
-								CardNormal = 2
+								classcardfound = 1
+							}
+						}
+						FindClick("/Images/card1notfound.png","funccard1notfound rHearthstone !a")
+						FindClick(card1twoimage,"funccard1found2 rHearthstone !a")
+						FindClick("/Images/card2notfound.png","funccard2notfound rHearthstone !a")
+						FindClick(card2twoimage,"funccard2found2 rHearthstone !a")
+						If cardoneabsent = 0
+						{
+							If classcardfound = 1
+							{
+								If cardonefoundtwo = 1
+								{
+									CardNormal = 2
+								}
+								else
+								{
+									CardNormal = 1
+								}
+							}
+							else if classcardfound = 0
+							{
+								If cardonefoundtwo = 1
+								{
+									CardGolden = 2
+								}
+								else
+								{
+									CardGolden = 1
+								}
+							}
+							If cardtwoabsent = 0
+							{
+								If cardtwofoundtwo = 1
+								{
+									CardGolden = 2
+								}
+								else
+								{
+									CardGolden = 1
+								}
 							}
 							else
 							{
-								CardNormal = 1
-							}
-						}
-						else if classcardfound = 0
-						{
-							If cardonefoundtwo = 1
-							{
-								CardGolden = 2
-							}
-							else
-							{
-								CardGolden = 1
-							}
-						}
-						If cardtwoabsent = 0
-						{
-							If cardtwofoundtwo = 1
-							{
-								CardGolden = 2
-							}
-							else
-							{
-								CardGolden = 1
+								CardGolden = 0
 							}
 						}
 						else
 						{
+							CardNormal = 0
 							CardGolden = 0
 						}
-					}
-					else
-					{
+						if key = "Basic"
+						{
+							if val2.PlayerClass = ""
+							{
+								outputcard := val2.cost . "," . val2.name . "," . val2.type . ",Neutral,Classic," . key . "," . CardNormal . "," . CardGolden "`n"
+							}
+							else
+							{
+								outputcard := val2.cost . "," . val2.name . "," . val2.type . "," . val2.playerClass . ",Classic," . key . "," . CardNormal . "," . CardGolden "`n"
+							}
+						}
+						else
+						{
+							if val2.PlayerClass = ""
+							{
+								outputcard := val2.cost . "," . val2.name . "," . val2.type . ",Neutral," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
+							}
+							else
+							{
+								outputcard := val2.cost . "," . val2.name . "," . val2.type . "," . val2.playerClass . "," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
+							}
+						}
+						if val2.PlayerClass = ""
+						fileappend,%outputcard%,%OutputFile%
 						CardNormal = 0
 						CardGolden = 0
 					}
-					outputcard := val2.cost . "," . val2.name . "," . val2.type . "," . val2.playerClass . "," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
-					if val2.PlayerClass = ""
-					{
-						winactivate,ahk_pid %NotePID%
-						outputcard := val2.cost . "," . val2.name . "," . val2.type . ",Neutral," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
-					}
-					fileappend,%outputcard%,%OutputFile%
-					CardNormal = 0
-					CardGolden = 0
 				}
-			}
-			while pausedbot = 1
-			{
-				sleep 1000
+				while pausedbot = 1
+				{
+					sleep 1000
+				}
 			}
 		}
 	}
