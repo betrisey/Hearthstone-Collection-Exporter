@@ -91,6 +91,8 @@ MainFunc()
 	{	
 		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promoset = 1 and key = "Promotion"))
 		{
+			Sectiontitle := key "Start`n"
+			fileappend,%Sectiontitle%,%OutputFile%
 			for key2, val2 in val
 			{	
 				if val2.collectible = -1
@@ -234,6 +236,8 @@ MainFunc()
 					sleep 1000
 				}
 			}
+			Sectiontitle := key "Finish`n"
+			fileappend,%Sectiontitle%,%OutputFile%
 		}
 	}
 msgbox,All Done you may now continue to play.
