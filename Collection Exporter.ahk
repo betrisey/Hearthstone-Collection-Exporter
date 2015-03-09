@@ -178,7 +178,7 @@ MainFunc()
 					if val2.PlayerClass = ""
 					{
 						winactivate,ahk_pid %NotePID%
-						outputcard := val2.cost . "," . val2.name . "," . val2.type . ",Neutral," . val2.rarity . "," . key . "," . CardNormal . "," . CardGolden "`n"
+						outputcard := val2.cost . "," . val2.name . "," . val2.type . ",Neutral," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
 					}
 					fileappend,%outputcard%,%OutputFile%
 					CardNormal = 0
