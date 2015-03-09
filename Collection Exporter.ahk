@@ -89,8 +89,7 @@ MainFunc()
 	cardinfo := parseJson(CardListMain)
 	for key, val in cardinfo[languageselect2]
 	{	
-		msgbox % key
-		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promotionset = 1 and key = "Promotion"))
+		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promoset = 1 and key = "Promotion"))
 		{
 			for key2, val2 in val
 			{	
@@ -225,7 +224,6 @@ MainFunc()
 								outputcard := val2.cost . "," . val2.name . "," . val2.type . "," . val2.playerClass . "," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
 							}
 						}
-						if val2.PlayerClass = ""
 						fileappend,%outputcard%,%OutputFile%
 						CardNormal = 0
 						CardGolden = 0
