@@ -5,7 +5,7 @@
 #UseHook, On
 #Include FindClick.ahk
 coordmode,mouse,screen
-
+OutputFile = %A_WorkingDir%/Collection.csv
 Gui,show,w200 h340,Please Select your Game Language
 gui, Add, Text,, Please select your Language.
 Gui, Add, Radio,w200 vLanguageselect, English (GB)
@@ -38,10 +38,12 @@ pausedbot = 0
 return
 
 StartExport:
+filedelete,%OutputFile%
+TitleText := "Mana Cost,Card Name,Type,Class,Set,Rarity,Normal,Golden`n"
+fileappend,%TitleText%,%OutputFile%
 Gui,submit
 msgbox,The exporter is about to export the collection, Please makesure you are on the collection screen with crafting mode off and the search box unselected. `nPlease keep your arms and legs inside the ride at all times (Do not move the mouse) and enjoy the show.
 FileRead,CardListMain,%A_WorkingDir%/Cards info/AllSetsAllLanguages.json
-;filedelete,%A_WorkingDir%/Collection.txt
 cardoneabsent = 0
 Process Exist,Hearthstone.exe
 GamePID := ErrorLevel
@@ -49,8 +51,8 @@ WinGetPos,Lx,Ly,H,W,ahk_pid %GamePID%
 winactivate,ahk_pid %GamePID%
 winrestore,ahk_pid %GamePID%
 winmove,ahk_pid %GamePID%,,100,100,1024,768,
-searchx := %Lx%+485
-searchy := %Ly%+697
+;searchx := %Lx%+485
+;searchy := %Ly%+697
 MainFunc()
 return
 
@@ -62,12 +64,13 @@ MainFunc()
 	for key, val in cardinfo[languageselect2]
 	{
 		for key2, val2 in val
-		{
+		{	
 			if val2.collectible = -1
 			{
 				if (val2.type = "Minion" or val2.type = "Weapon" or val2.type = "Spell")
 				{
 					CardName := val2.name
+					searchtext = hello
 					searchtextpre := val2.name . " " . val2.text . " " . val2.artist
 					StringReplace,searchtextintermed,searchtextpre,<b>,%A_SPACE%,1
 					StringReplace,searchtextter,searchtextintermed,</b>,%A_SPACE%,1
@@ -132,62 +135,60 @@ MainFunc()
 						{
 							If cardonefoundtwo = 1
 							{
-								fileappend,Normal %CardName% = 2`n,Collection.txt
-								;msgbox, normal 2
+								CardNormal = 2
 							}
 							else
 							{
-								fileappend,Normal %CardName% = 1`n,Collection.txt
-								;msgbox, normal 1
+								CardNormal = 1
 							}
 						}
 						else if classcardfound = 0
 						{
 							If cardonefoundtwo = 1
 							{
-								fileappend,Golden %CardName% = 2`n,Collection.txt
-								;msgbox,golden 2 1
+								CardGolden = 2
 							}
 							else
 							{
-								fileappend,Golden %CardName% = 1`n,Collection.txt
-								;msgbox,golden 1 1
+								CardGolden = 1
 							}
 						}
 						If cardtwoabsent = 0
 						{
 							If cardtwofoundtwo = 1
 							{
-								fileappend,Golden %CardName% = 2`n,Collection.txt
-								;msgbox,golden 2 2
+								CardGolden = 2
 							}
 							else
 							{
-								fileappend,Golden %CardName% = 1`n,Collection.txt
-								;msgbox,golden 1 2
+								CardGolden = 1
 							}
 						}
 						else
 						{
-							fileappend,Golden %CardName% = 0`n,Collection.txt
-							;msgbox,golden 0
+							CardGolden = 0
 						}
 					}
 					else
 					{
-						fileappend,Normal %CardName% = 0`n,Collection.txt
-						fileappend,Golden %CardName% = 0`n,Collection.txt
-						;msgbox, all 0
+						CardNormal = 0
+						CardGolden = 0
 					}
+					outputcard := val2.cost . "," . val2.name . "," . val2.type . "," . val2.playerClass . "," . key . "," . val2.rarity . "," . CardNormal . "," . CardGolden "`n"
+					if val2.PlayerClass = ""
+					{
+						winactivate,ahk_pid %NotePID%
+						outputcard := val2.cost . "," . val2.name . "," . val2.type . ",Neutral," . val2.rarity . "," . key . "," . CardNormal . "," . CardGolden "`n"
+					}
+					fileappend,%outputcard%,%OutputFile%
+					CardNormal = 0
+					CardGolden = 0
 				}
 			}
 			while pausedbot = 1
 			{
 				sleep 1000
 			}
-			Process Exist,notepad++.exe
-			NotePID := ErrorLevel
-			winactivate,ahk_pid %NotePID%
 		}
 	}
 msgbox,All Done you may now continue to play.
