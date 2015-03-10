@@ -44,7 +44,6 @@ filedelete,%OutputFile%
 TitleText := "Mana Cost,Card Name,Type,Class,Set,Rarity,Normal,Golden`n"
 fileappend,%TitleText%,%OutputFile%
 Gui,submit
-msgbox,The exporter is about to export the collection, Please makesure you are on the collection screen with crafting mode off and the search box unselected. `nPlease keep your arms and legs inside the ride at all times (Do not move the mouse) and enjoy the show.
 FileRead,CardListMain,%A_WorkingDir%/Cards info/AllSetsAllLanguages.json
 cardoneabsent = 0
 Process Exist,Hearthstone.exe
@@ -52,7 +51,7 @@ GamePID := ErrorLevel
 WinGetPos,Lx,Ly,H,W,ahk_pid %GamePID%
 winactivate,ahk_pid %GamePID%
 winrestore,ahk_pid %GamePID%
-winmove,ahk_pid %GamePID%,,100,100,1024,768,
+winmove,ahk_pid %GamePID%,,100,100
 ;searchx := %Lx%+485
 ;searchy := %Ly%+697
 GUI,2:show,W200 h190,Sets List
@@ -79,12 +78,19 @@ ExitApp
 
 StartExport:
 gui,2:submit
+msgbox,IMPORTANT!`nThe exporter is about to export the collection, Please makesure you are on the collection screen with crafting mode off and the search box unselected. Open the settings menu and set the resolution to 1024x768 and quality to high. `nPlease keep your arms and legs inside the ride at all times (Do not move the mouse) and enjoy the show.
 mainFunc()
 return
 
 MainFunc()
 {	
 	global
+	;gui,3:show,w200 h300 x924 y130,
+	;Gui,3:Font, cblack s16 w10,
+	;gui,3:add,text,vStatus,Working!
+	;gui,3:add,text,w180,`nTo pause press ctrl + F8`nTo resume press ctrl + F7`nPlease do not move the mouse while the program is running.
+	;Gui,3:+LastFound +AlwaysOnTop
+	;Gui,3:-Caption +ToolWindow
 	Languagefile()
 	cardinfo := parseJson(CardListMain)
 	for key, val in cardinfo[languageselect2]
@@ -99,6 +105,7 @@ MainFunc()
 				{
 					if (val2.type = "Minion" or val2.type = "Weapon" or val2.type = "Spell")
 					{
+						
 						CardName := val2.name
 						searchtext = hello
 						searchtextpre := val2.name . " " . val2.text . " " . val2.artist
@@ -125,7 +132,7 @@ MainFunc()
 						cardtwofoundtwo = 0
 						classcardfound = 0
 						winactivate,ahk_pid %GamePID%
-						mouseClick,left,585,797
+						mouseClick,left,585,827
 						send,{delete}
 						sleep 200
 						SetKeyDelay, 1, 0
@@ -134,7 +141,7 @@ MainFunc()
 						sleep 100
 						send ^v
 						;controlsend,ahk_parent,{enter},Hearthstone,
-						mouseclick,left,585,757
+						mouseclick,left,585,777
 						sleep 100
 						card2twoimage := "images/card2found2" . val2.type
 						card1twoimage := "images/card1found2" . val2.type
