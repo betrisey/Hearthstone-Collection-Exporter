@@ -5,7 +5,7 @@
 #UseHook, On
 #Include FindClick.ahk
 coordmode,mouse,screen
-OutputFile = %A_WorkingDir%/Collection.csv
+OutputFile = %A_WorkingDir%/Collection.tmp
 
 Gui,show,w200 h340,Language Select
 gui, Add, Text,, Please select your Game Language.
@@ -78,19 +78,19 @@ ExitApp
 
 StartExport:
 gui,2:submit
-msgbox,IMPORTANT!`nThe exporter is about to export the collection, Please makesure you are on the collection screen with crafting mode off and the search box unselected. Open the settings menu and set the resolution to 1024x768 and quality to high. `nPlease keep your arms and legs inside the ride at all times (Do not move the mouse) and enjoy the show.
+msgbox,IMPORTANT!`nThe exporter is about to export the collection, Please makesure you are on the collection screen with crafting mode off and the search box unselected. `n`nOpen the settings menu and set the resolution to 1024x768 and quality to high. `n`nPlease keep your arms and legs inside the ride at all times (Do not move the mouse) and enjoy the show.
 mainFunc()
 return
 
 MainFunc()
 {	
 	global
-	;gui,3:show,w200 h300 x924 y130,
-	;Gui,3:Font, cblack s16 w10,
-	;gui,3:add,text,vStatus,Working!
-	;gui,3:add,text,w180,`nTo pause press ctrl + F8`nTo resume press ctrl + F7`nPlease do not move the mouse while the program is running.
-	;Gui,3:+LastFound +AlwaysOnTop
-	;Gui,3:-Caption +ToolWindow
+	gui,3:show,w200 h300 x924 y130,
+	Gui,3:Font, cblack s16 w10,
+	gui,3:add,text,vStatus,Working!
+	gui,3:add,text,w180,`nTo pause press ctrl + F8`nTo resume press ctrl + F7`nPlease do not move the mouse while the program is running.
+	Gui,3:+LastFound +AlwaysOnTop
+	Gui,3:-Caption +ToolWindow
 	Languagefile()
 	cardinfo := parseJson(CardListMain)
 	for key, val in cardinfo[languageselect2]
@@ -247,6 +247,14 @@ MainFunc()
 			fileappend,%Sectiontitle%,%OutputFile%
 		}
 	}
+FileSelectFile,SaveFile,S 16,,Save your collection.,Spreadsheet CSV (*.csv)
+splitpath,SaveFile,,,extension
+msgbox % extension
+If (extension != "csv")
+{
+	SaveFile .= ".csv"
+}
+filecopy,%outputfile%,%SaveFile%,1
 msgbox,All Done you may now continue to play.
 exitapp
 }
