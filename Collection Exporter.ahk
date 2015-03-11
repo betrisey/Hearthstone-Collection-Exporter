@@ -87,12 +87,15 @@ MainFunc()
 	global
 	gui,3:show,w200 h300 x924 y130,
 	Gui,3:Font, cblack s16 w10,
-	gui,3:add,text,vStatus,Working!
+	gui,3:add,text,vStatus,Starting
 	gui,3:add,text,w180,`nTo pause press ctrl + F8`nTo resume press ctrl + F7`nPlease do not move the mouse while the program is running.
 	Gui,3:+LastFound +AlwaysOnTop
 	Gui,3:-Caption +ToolWindow
 	Languagefile()
+	guicontrol,text,Status,Loading Data
 	cardinfo := parseJson(CardListMain)
+	guicontrol,text,Status,Working!
+	winmove,ahk_pid %GamePID%,,100,100
 	for key, val in cardinfo[languageselect2]
 	{	
 		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promoset = 1 and key = "Promotion"))
@@ -131,6 +134,7 @@ MainFunc()
 						cardtwoabsent = 0
 						cardtwofoundtwo = 0
 						classcardfound = 0
+						winmove,ahk_pid %GamePID%,,100,100
 						winactivate,ahk_pid %GamePID%
 						mouseClick,left,585,827
 						send,{delete}
@@ -240,8 +244,10 @@ MainFunc()
 				}
 				while pausedbot = 1
 				{
+					guicontrol,text,Status,Paused
 					sleep 1000
 				}
+				guicontrol,text,Status,Working!
 			}
 			Sectiontitle := key "Finish`n"
 			fileappend,%Sectiontitle%,%OutputFile%
@@ -249,7 +255,6 @@ MainFunc()
 	}
 FileSelectFile,SaveFile,S 16,,Save your collection.,Spreadsheet CSV (*.csv)
 splitpath,SaveFile,,,extension
-msgbox % extension
 If (extension != "csv")
 {
 	SaveFile .= ".csv"
