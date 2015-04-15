@@ -1,4 +1,9 @@
-﻿;Written by Jammo2k5
+﻿;Liraries used:
+;Find click 2nd edition.
+;http://www.autohotkey.com/board/topic/89592-findclick-2nd-edition/
+;Thanks to tic (Tariq Porter) for his GDI+ Library
+;http://www.autohotkey.com/forum/viewtopic.php?t=32238
+;Written by Jammo2k5
 #SingleInstance, Force
 #Persistent
 #InstallKeybdHook
@@ -7,7 +12,7 @@
 #Include Gdip.ahk
 coordmode,mouse,client
 OutputFile = %A_WorkingDir%/Collection.tmp
-formulacounter = 1
+formulacounter = 2
 
 Gui,show,w200 h340,Language Select
 gui, Add, Text,, Please select your Game Language.
@@ -54,17 +59,18 @@ WinGetPos,Lx,Ly,H,W,ahk_pid %GamePID%
 winactivate,ahk_pid %GamePID%
 ;searchx := %Lx%+485
 ;searchy := %Ly%+697
-GUI,2:show,W200 h190,Sets List
+GUI,2:show,W200 h210,Sets List
 gui,2:add,text, x10 y10 w180,Please select the sets of cards you wish to scan.
 gui,2:add,Checkbox,vBasicset w180,Basic
 gui,2:add,Checkbox,vClassicset w180,Classic (Expert)
 gui,2:add,Checkbox,vNaxxset w180,Naxxramas
 gui,2:add,Checkbox,vGoblinsset w180,GVG
+gui,2:add,Checkbox,vBlackrockset w180,Blackrock
 gui,2:add,Checkbox,vRewardset w180,Reward
 gui,2:add,Checkbox,vPromoset w180,Promotion
-gui,2:add,button,gStartExport x8 y157,Start
-gui,2:add,button,gCloseApp y157 x50,Cancel
-gui,2:add,button,gCalibrate y157 x110,Calibrate
+gui,2:add,button,gStartExport x8 y177,Start
+gui,2:add,button,gCloseApp y177 x50,Cancel
+gui,2:add,button,gCalibrate y177 x105,Calibrate
 return
 
 CloseApp:
@@ -366,7 +372,7 @@ MainFunc()
 	guicontrol,text,Status,Working!
 	for key, val in cardinfo[languageselect2]
 	{	
-		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promoset = 1 and key = "Promotion"))
+		if ((Basicset = 1 and key = "Basic") or (Classicset = 1 and key = "Classic") or (Naxxset = 1 and key = "Curse of Naxxramas") or (Goblinsset = 1 and key = "Goblins vs Gnomes") or (Rewardset = 1 and key = "Reward") or (Promoset = 1 and key = "Promotion") or (Blackrockset = 1 and key="Blackrock Mountain"))
 		{
 			for key2, val2 in val
 			{	
@@ -418,7 +424,7 @@ MainFunc()
 						sleep 50
 						card2twoimage := "images/card2found2" . val2.type . ".png"
 						card1twoimage := "images/card1found2" . val2.type . ".png"
-						msgbox %card2twoimage% %card1twoimage% 
+						;msgbox %card2twoimage% %card1twoimage% 
 						FindClick(Cardtype,"rHearthstone funcclasscardfound !a")
 						if val2.type = "Minion"
 						{
