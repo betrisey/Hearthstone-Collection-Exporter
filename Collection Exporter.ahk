@@ -488,12 +488,12 @@ MainFunc()
 						{
 							if val2.playerClass = ""
 							{
-								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . key . "	Basic	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . ")," . formulacounter . ")))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	Neutral	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
+								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . key . "	Basic	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . "), 2)))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	Neutral	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
 								formulacounter++
 							}
 							else
 							{
-								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . key . "	Basic	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . ")," . formulacounter . ")))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	" . val2.playerClass . "	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
+								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . key . "	Basic	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . "), 2)))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	" . val2.playerClass . "	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
 								formulacounter++
 							}
 						}
@@ -501,12 +501,12 @@ MainFunc()
 						{
 							if val2.PlayerClass = ""
 							{
-								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . val2.rarity . "	" . key . "	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . ")," . formulacounter . ")))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	Neutral	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
+								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . val2.rarity . "	" . key . "	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . "), 2)))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	Neutral	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
 								formulacounter++
 							}
 							else
 							{
-								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . val2.rarity . "	" . key . "	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . ")," . formulacounter . ")))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	" . val2.playerClass . "	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
+								outputcard := CardNormal . "	" . CardGolden . "	" .  val2.cost . "	" . val2.name . "	" . val2.rarity . "	" . key . "	=if($D" . formulacounter . " = """","""",if($E" . formulacounter . "=""Legendary"",MIN(($A" . formulacounter . "+$B" . formulacounter . "),1),MIN(($A" . formulacounter . "+$B" . formulacounter . "), 2)))" . "	" . "=if(($A" . formulacounter . "+$B" . formulacounter . ")>0,1,0)" . "	" . val2.type . "	" . val2.playerClass . "	" . val2.race . "	" . val2.attack . "	" . val2.health . "`n"
 								formulacounter++
 							}
 						}
